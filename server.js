@@ -1,6 +1,6 @@
 import bodyParser from "body-parser";
 import express, { Router } from "express";
-// import router from "./router/index.js";
+import router from "./routers/Index.js";
 import cors from "cors";
 
 const app = express();
@@ -14,10 +14,6 @@ app.use(
     })
 );
 
-const router = express.Router();
-router.get("/", (req, res) => {
-    return res.json("Nguyen Van A");
-});
 app.use(router);
 
 app.listen(port, () => {

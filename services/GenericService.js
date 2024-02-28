@@ -12,8 +12,10 @@ class GenericService {
             } else {
                 result = await this.model.findAll();
             }
+            console.log(res);
             ResponseHandler.success(res, "Lấy dữ liệu thành công", result);
         } catch (error) {
+            console.log(error);
             ResponseHandler.error(res, "Xảy ra lỗi ở máy chủ");
         }
     }
@@ -35,7 +37,15 @@ class GenericService {
         }
     }
 
-    async getById(res, id, scope = null) {
+    async getById(id, scope = null) {
+        if (scope) {
+            return await this.model.scope(scope).findByPk(id);
+        } else {
+            return await this.model.findByPk(id);
+        }
+    }
+
+    async getByIdRes(res, id, scope = null) {
         try {
             let result;
             if (scope) {
@@ -43,6 +53,7 @@ class GenericService {
             } else {
                 result = await this.model.findByPk(id);
             }
+            console.log(result);
             ResponseHandler.success(res, "Lấy dữ liệu thành công", result);
         } catch (error) {
             ResponseHandler.error(res, "Xảy ra lỗi ở máy chủ");
