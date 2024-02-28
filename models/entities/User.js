@@ -63,8 +63,9 @@ const User = sequelize.define(
 Role.hasMany(User, { as: "users", foreignKey: "role_id" });
 User.belongsTo(Role, { foreignKey: "role_id" });
 
-async () => {
+(async () => {
     await sequelize.sync();
-};
+    console.log("Database synchronized");
+})();
 
 export default User;

@@ -21,8 +21,9 @@ const Product = sequelize.define("products", {
     },
 });
 
-async () => {
+(async () => {
     await sequelize.sync();
-};
+    console.log("Database synchronized");
+})();
 
 export default Product;

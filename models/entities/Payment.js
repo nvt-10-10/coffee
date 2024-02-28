@@ -16,8 +16,9 @@ const Payment = sequelize.define("payments", {
     },
 });
 
-async () => {
+(async () => {
     await sequelize.sync();
-};
+    console.log("Database synchronized");
+})();
 
 export default Payment;

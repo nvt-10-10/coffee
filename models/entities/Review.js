@@ -20,8 +20,9 @@ const Review = sequelize.define("reviews", {
 
 Product.hasMany(Review, { as: "products", foreignKey: "product_id" });
 Review.belongsTo(Product, { foreignKey: "product_id" });
-async () => {
+(async () => {
     await sequelize.sync();
-};
+    console.log("Database synchronized");
+})();
 
 export default Review;

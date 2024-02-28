@@ -19,8 +19,8 @@ const Image = sequelize.define("images", {
 Product.hasMany(Image, { as: "products", foreignKey: "product_id" });
 Image.belongsTo(Product, { foreignKey: "product_id" });
 
-async () => {
+(async () => {
     await sequelize.sync();
-};
-
+    console.log("Database synchronized");
+})();
 export default Category;
