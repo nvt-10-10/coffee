@@ -64,16 +64,20 @@ class GenericService {
         return this.model.create(data);
     }
     async update(id, newData, res) {
-        const item = await this.getById(id);
-        if (!item) {
-            ResponseHandler.error(res, `${this.model.name} không tìm thấy`);
-            throw new Error();
-        } else {
-            await item.update(newData);
-            ResponseHandler.success(
-                res,
-                `${this.model.name} cập nhật thành công`
-            );
+        try {
+            const item = await this.getById(id);
+            if (!item) {
+                ResponseHandler.error(res, `${this.model.name} không tìm thấy`);
+                throw new Error();
+            } else {
+                await item.update(newData);
+                ResponseHandler.success(
+                    res,
+                    `${this.model.name} cập nhật thành công`
+                );
+            }
+        } catch (error) {
+            ResponseHandler.error(res, "Xảy ra lỗi ở máy chủ");
         }
     }
 

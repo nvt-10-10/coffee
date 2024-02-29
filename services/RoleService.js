@@ -1,5 +1,5 @@
 import Role from "../models/entities/Role.js";
-import RoleRespository from "../repositories/RoleRespository.js";
+import RoleRespository from "../repositories/RoleRepository.js";
 import ResponseHandler from "../utils/ResponseHandler.js";
 import GenericService from "./GenericService.js";
 class RoleService extends GenericService {
@@ -15,10 +15,10 @@ class RoleService extends GenericService {
         await this.getByIdRes(res, id, "base");
     }
 
-    async createRole(res, RoleData) {
+    async createRole(res, roleData) {
         try {
-            if (await RoleRespository.checkName(RoleData.name)) {
-                await this.create(RoleData);
+            if (await RoleRespository.checkName(roleData.name)) {
+                await this.create(roleData);
                 ResponseHandler.success(res, "Tao Role thanh cong");
             } else {
                 ResponseHandler.error(res, "Quyền đã tồn tại", 404);
@@ -28,10 +28,10 @@ class RoleService extends GenericService {
         }
     }
 
-    async updateRole(res, id, RoleData) {
+    async updateRole(res, id, roleData) {
         try {
-            console.log(`id: ${id} data ${RoleData} res: ${res}`);
-            await this.update(id, RoleData, res);
+            console.log(`id: ${id} data ${roleData} res: ${res}`);
+            await this.update(id, roleData, res);
         } catch (error) {
             console.log(error);
             ResponseHandler.error(res, "Xảy ra lỗi ở máy chủ");

@@ -1,4 +1,4 @@
-import User from "../models/entities/User";
+import User from "../models/entities/User.js";
 
 class UserRepository {
     async checkUserName(username) {
