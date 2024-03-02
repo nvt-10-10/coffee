@@ -36,7 +36,6 @@ class CategoryService extends GenericService {
 
     async updateCategory(res, id, CategoryData) {
         try {
-            console.log(`id: ${id} data ${CategoryData} res: ${res}`);
             await this.update(id, CategoryData, res);
         } catch (error) {
             ResponseHandler.error(res, "Xảy ra lỗi ở máy chủ");

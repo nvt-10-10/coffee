@@ -20,7 +20,7 @@ class GenericService {
         }
     }
 
-    async getAllByPage(res, scope = null, page) {
+    async getAllByPage(res, page, scope = null) {
         try {
             let result;
             if (scope) {

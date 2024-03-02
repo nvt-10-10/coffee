@@ -7,7 +7,6 @@ class RoleRepository {
                 name,
             },
         });
-        console.log(role == null);
         return role == null;
     }
 }
