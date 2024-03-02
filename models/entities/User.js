@@ -15,6 +15,7 @@ const User = sequelize.define(
             type: DataTypes.STRING,
             allowNull: false,
             index: true,
+            unique: true,
         },
         password: {
             type: DataTypes.STRING,
@@ -31,9 +32,22 @@ const User = sequelize.define(
         },
         phone: {
             type: DataTypes.STRING,
+            validate: {
+                isVietnamesePhoneNumber(value) {
+                    if (!/^(0|(\+84))[1-9]\d{8,9}$/.test(value)) {
+                        throw new Error(
+                            "Số điện thoại không hợp lệ. Số điện thoại phải bắt đầu bằng số 0 hoặc +84, và có 9 hoặc 10 chữ số."
+                        );
+                    }
+                },
+            },
         },
         email: {
             type: DataTypes.STRING,
+            unique: true,
+            validate: {
+                isEmail: true, // Ràng buộc kiểm tra định dạng email
+            },
         },
     },
     {

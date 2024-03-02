@@ -1,7 +1,8 @@
+import { ValidationError } from "sequelize";
 import Role from "../models/entities/Role.js";
-import RoleRespository from "../repositories/RoleRepository.js";
 import ResponseHandler from "../utils/ResponseHandler.js";
 import GenericService from "./GenericService.js";
+import { handleValidationError } from "../utils/HandleValidationError.js";
 class RoleService extends GenericService {
     constructor() {
         super(Role);
@@ -11,19 +12,18 @@ class RoleService extends GenericService {
     }
 
     async getRoleById(res, id) {
-        console.log(id);
         await this.getByIdRes(res, id, "base");
     }
 
     async createRole(res, roleData) {
         try {
-            if (await RoleRespository.checkName(roleData.name)) {
-                await this.create(roleData);
-                ResponseHandler.success(res, "Tao Role thanh cong");
-            } else {
-                ResponseHandler.error(res, "Quyền đã tồn tại", 404);
-            }
+            await this.create(roleData);
+            ResponseHandler.success(res, "Tao Role thanh cong");
         } catch (error) {
+            if (error instanceof ValidationError) {
+                ResponseHandler.error(res, handleValidationError(error.errors));
+                return;
+            }
             ResponseHandler.error(res, "Xảy ra lỗi ở máy chủ");
         }
     }

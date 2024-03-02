@@ -10,18 +10,25 @@ class UserController {
     }
 
     async createUser(req, res) {
-        const { username, password, email, name } = req.body;
-        await UserService.createUser(res, { username, password, email, name });
+        const { username, password, email, name, phone } = req.body;
+        await UserService.createUser(res, {
+            username,
+            password,
+            name,
+            email,
+            phone,
+        });
     }
 
     async updateUser(req, res) {
-        const { id, username, password, email, name } = req.body;
+        const { id, username, password, email, name, phone } = req.body;
         await UserService.updateUser(res, id, {
             id,
             username,
             password,
-            email,
             name,
+            email,
+            phone,
         });
     }
 

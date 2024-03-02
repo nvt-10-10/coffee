@@ -3,6 +3,8 @@ import User from "../models/entities/User.js";
 import UserRepository from "../repositories/UserRepository.js";
 import ResponseHandler from "../utils/ResponseHandler.js";
 import { comparePassword, hashPassword } from "../utils/bcryptUtils.js";
+import { ValidationError } from "sequelize";
+import { handleValidationError } from "../utils/HandleValidationError.js";
 class UserService extends GenericService {
     constructor() {
         super(User);
@@ -13,21 +15,20 @@ class UserService extends GenericService {
     }
 
     async getUserById(res, id) {
-        await this.getById(res, id);
+        await this.getByIdRes(res, id);
     }
 
     async createUser(res, userData) {
         try {
-            if (await UserRepository.checkUserName(userData.username)) {
-                ResponseHandler.error(res, "Username đã tồn tại", 404);
-            } else {
-                if (!userData.role_id) userData.role_id = 1;
-                userData.password = await hashPassword(userData.password);
-                await this.create(userData);
-                ResponseHandler.success(res, "Tạo tài khoản thành công");
-            }
+            if (!userData.role_id) userData.role_id = 1;
+            userData.password = await hashPassword(userData.password);
+            await this.create(userData);
+            ResponseHandler.success(res, "Tạo tài khoản thành công");
         } catch (error) {
-            console.log(error);
+            if (error instanceof ValidationError) {
+                ResponseHandler.error(res, handleValidationError(error.errors));
+                return;
+            }
             ResponseHandler.error(res, "Xảy ra lỗi ở máy chủ");
         }
     }
