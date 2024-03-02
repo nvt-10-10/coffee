@@ -1,7 +1,12 @@
 import UserService from "../services/UserService.js";
 class UserController {
     async getAllUser(req, res) {
-        await UserService.getAllUsers(res);
+        await UserService.getAll(res);
+    }
+
+    async getAllUserByPage(req, res) {
+        const { page } = req.body;
+        await UserService.getAllUserByPage(res, page);
     }
 
     async getUserById(req, res) {

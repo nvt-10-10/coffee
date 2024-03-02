@@ -1,6 +1,5 @@
 import GenericService from "./GenericService.js";
 import User from "../models/entities/User.js";
-import UserRepository from "../repositories/UserRepository.js";
 import ResponseHandler from "../utils/ResponseHandler.js";
 import { comparePassword, hashPassword } from "../utils/bcryptUtils.js";
 import { ValidationError } from "sequelize";
@@ -8,6 +7,10 @@ import { handleValidationError } from "../utils/HandleValidationError.js";
 class UserService extends GenericService {
     constructor() {
         super(User);
+    }
+
+    async getAllUser(res) {
+        await this.getAll(res);
     }
 
     async getAllUserByPage(res, page) {
