@@ -5,7 +5,7 @@ class UserController {
     }
 
     async getAllUserByPage(req, res) {
-        const { page } = req.body;
+        const page = req.params.page;
         await UserService.getAllUserByPage(res, page);
     }
 
@@ -27,14 +27,23 @@ class UserController {
 
     async updateUser(req, res) {
         const { id, username, password, email, name, phone } = req.body;
-        await UserService.updateUser(res, id, {
+        let file;
+        if (req.uploadedFile) {
+            file = req.uploadedFile;
+        }
+        await UserService.updateUser(
+            res,
             id,
-            username,
-            password,
-            name,
-            email,
-            phone,
-        });
+            {
+                id,
+                username,
+                password,
+                name,
+                email,
+                phone,
+            },
+            file
+        );
     }
 
     async deleteUser(req, res) {

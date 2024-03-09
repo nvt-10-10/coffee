@@ -2,8 +2,9 @@ import GenericService from "./GenericService.js";
 import User from "../models/entities/User.js";
 import ResponseHandler from "../utils/ResponseHandler.js";
 import { comparePassword, hashPassword } from "../utils/bcryptUtils.js";
-import { ValidationError } from "sequelize";
+import { ValidationError, where } from "sequelize";
 import { handleValidationError } from "../utils/HandleValidationError.js";
+import Role from "../models/entities/Role.js";
 class UserService extends GenericService {
     constructor() {
         super(User);
@@ -18,16 +19,24 @@ class UserService extends GenericService {
     }
 
     async getUserById(res, id) {
-        await this.getByIdRes(res, id);
+        await this.getByIdRes(res, id, "base");
     }
 
     async createUser(res, userData) {
         try {
-            if (!userData.role_id) userData.role_id = 1;
+            if (!userData.role_id) {
+                const role = await Role.findOne({
+                    where: {
+                        name: "Người dùng ",
+                    },
+                });
+                userData.role_id = role.id;
+            }
             userData.password = await hashPassword(userData.password);
             await this.create(userData);
             ResponseHandler.success(res, "Tạo tài khoản thành công");
         } catch (error) {
+            console.log(error);
             if (error instanceof ValidationError) {
                 ResponseHandler.error(res, handleValidationError(error.errors));
                 return;
@@ -36,12 +45,14 @@ class UserService extends GenericService {
         }
     }
 
-    async updateUser(res, id, userData) {
+    async updateUser(res, id, userData, file = null) {
         try {
             const user = await this.getById(id);
             if (user) {
                 if (userData.password) {
-                    if (await comparePassword(password, user.password)) {
+                    if (
+                        await comparePassword(userData.password, user.password)
+                    ) {
                         return ResponseHandler.error(
                             res,
                             "Đã trùng mật khẩu cũ",
@@ -50,15 +61,17 @@ class UserService extends GenericService {
                     }
                     userData.password = await hashPassword(userData.password);
                 }
-                console.log("chay", userData);
-                const newUser = await user.update(userData);
-                console.log("chay roi", newUser);
+                if (file) {
+                    const uploadService = new UploadService("upload/users");
+                    await uploadService.deleteFile(user.avatar);
+                    userData.avatar = await uploadService.saveFile(file);
+                }
+                await user.update(userData);
                 ResponseHandler.success(res, `Users cập nhật thành công`);
             } else {
                 ResponseHandler.error(res, `Users không tìm thấy`);
             }
         } catch (error) {
-            console.log(error);
             ResponseHandler.error(res, "Xảy ra lỗi ở máy chủ");
         }
     }

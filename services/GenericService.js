@@ -1,3 +1,4 @@
+import PaginatePaginate from "../models/PaginatePaginate.js";
 import ResponseHandler from "../utils/ResponseHandler.js";
 class GenericService {
     constructor(model) {
@@ -56,6 +57,7 @@ class GenericService {
             console.log(result);
             ResponseHandler.success(res, "Lấy dữ liệu thành công", result);
         } catch (error) {
+            console.log(error);
             ResponseHandler.error(res, "Xảy ra lỗi ở máy chủ");
         }
     }
@@ -98,6 +100,28 @@ class GenericService {
                 );
             }
         } catch (error) {
+            ResponseHandler.error(res, "Xảy ra lỗi ở máy chủ");
+        }
+    }
+    async filter(res, paginationParams) {
+        console.log(paginationParams);
+        try {
+            let { page, size, sort } = paginationParams;
+            size = parseInt(size);
+            page = parseInt(page);
+            const limit = size;
+            const offset = (page - 1) * size > 0 ? (page - 1) * size : 0;
+
+            const { rows, count: total } = await this.model.findAndCountAll({
+                order: [["createdAt"]],
+                limit: limit,
+                offset: offset,
+            });
+
+            const data = new PaginatePaginate(rows, total, page, size).get();
+            ResponseHandler.success(res, `Lấy dữ liệu thành công `, data);
+        } catch (error) {
+            console.log(error);
             ResponseHandler.error(res, "Xảy ra lỗi ở máy chủ");
         }
     }

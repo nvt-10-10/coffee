@@ -21,6 +21,9 @@ const Role = sequelize.define(
                 attributes: ["id", "name"],
             },
         },
+    },
+    {
+        timestamps: true,
     }
 );
 

@@ -1,6 +1,7 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../../connect/ConnectDb.js";
 import Role from "./Role.js";
+
 const User = sequelize.define(
     "users",
     {
@@ -49,11 +50,15 @@ const User = sequelize.define(
                 isEmail: true, // Ràng buộc kiểm tra định dạng email
             },
         },
+
+        avatar: {
+            type: DataTypes.STRING,
+        },
     },
     {
         scopes: {
             base: {
-                attributes: ["id", "name", "img"],
+                attributes: ["id", "name", "avatar"],
             },
             role: {
                 include: {
@@ -74,7 +79,7 @@ const User = sequelize.define(
     }
 );
 
-Role.hasMany(User, { as: "users", foreignKey: "role_id" });
+Role.hasMany(User, { as: "roles", foreignKey: "role_id" });
 User.belongsTo(Role, { foreignKey: "role_id" });
 
 (async () => {

@@ -5,7 +5,7 @@ class CategoryController {
     }
 
     async getAllCategoryByPage(req, res) {
-        const { page } = req.body;
+        const page = req.params.page;
         await CategoryService.getAllCategoriesByPage(res, page);
     }
 

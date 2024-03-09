@@ -5,7 +5,7 @@ class PaymentMethodController {
     }
 
     async getAllPaymentMethodByPage(req, res) {
-        const { page } = req.body;
+        const page = req.params.page;
         await PaymentMethodService.getAllPaymentMethodByPage(res, page);
     }
 
