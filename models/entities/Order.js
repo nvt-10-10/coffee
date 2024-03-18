@@ -18,10 +18,9 @@ Order.belongsTo(Payment, { foreignKey: "payment_id" });
 Order.belongsTo(User, { foreignKey: "client_id" });
 Order.belongsTo(User, { foreignKey: "staff_id" });
 
-Order;
-(async () => {
-    await sequelize.sync();
-    console.log("Database synchronized");
-})();
+// (async () => {
+//     await sequelize.sync();
+//     console.log("Database synchronized");
+// })();
 
 export default Order;

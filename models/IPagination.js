@@ -5,4 +5,4 @@ const IPagination = {
     search: "",
 };
 
-module.exports = IPagination;
+export default IPagination;

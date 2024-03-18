@@ -26,9 +26,6 @@ const Category = sequelize.define(
     }
 );
 
-(async () => {
-    await sequelize.sync();
-    console.log("Database synchronized");
-})();
+// s
 
 export default Category;

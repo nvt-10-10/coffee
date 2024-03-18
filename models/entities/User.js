@@ -54,6 +54,13 @@ const User = sequelize.define(
         avatar: {
             type: DataTypes.STRING,
         },
+
+        token: {
+            type: DataTypes.STRING,
+        },
+        refreshToken: {
+            type: DataTypes.STRING,
+        },
     },
     {
         scopes: {
@@ -82,9 +89,9 @@ const User = sequelize.define(
 Role.hasMany(User, { as: "roles", foreignKey: "role_id" });
 User.belongsTo(Role, { foreignKey: "role_id" });
 
-(async () => {
-    await sequelize.sync();
-    console.log("Database synchronized");
-})();
+// (async () => {
+//     await sequelize.sync();
+//     console.log("Database synchronized");
+// })();
 
 export default User;

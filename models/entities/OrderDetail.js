@@ -20,9 +20,9 @@ Product.hasMany(OrderDetail, { as: "products", foreignKey: "product_id" });
 
 OrderDetail.belongsTo({ foreignKey: "order_id" });
 OrderDetail.belongsTo({ foreignKey: "product_id" });
-(async () => {
-    await sequelize.sync();
-    console.log("Database synchronized");
-})();
+// (async () => {
+//     await sequelize.sync();
+//     console.log("Database synchronized");
+// })();
 
 export default OrderDetail;

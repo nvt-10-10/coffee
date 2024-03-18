@@ -33,6 +33,16 @@ const Product = sequelize.define(
         descriptions: {
             type: DataTypes.STRING,
         },
+
+        averageStar: {
+            type: DataTypes.FLOAT,
+            defaultValue: 0,
+        },
+
+        count_review: {
+            type: DataTypes.INTEGER,
+            defaultValue: 0,
+        },
     },
     {
         scopes: {
@@ -44,9 +54,5 @@ const Product = sequelize.define(
 );
 Category.hasMany(Product, { as: "categories", foreignKey: "category_id" });
 Product.belongsTo(Category, { foreignKey: "category_id" });
-(async () => {
-    await sequelize.sync();
-    console.log("Database synchronized");
-})();
 
 export default Product;

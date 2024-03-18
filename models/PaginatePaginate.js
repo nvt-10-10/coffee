@@ -35,4 +35,4 @@ class PaginatePaginate {
     }
 }
 
-export default PaginatePaginate; // Xuất hàm tạo của lớp
+export default PaginatePaginate;

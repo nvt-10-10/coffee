@@ -39,7 +39,10 @@ class ProductService extends GenericService {
         try {
             if (file) {
                 const uploadService = new UploadService("upload/products");
-                ProductData.img = await uploadService.saveFile(file);
+                ProductData.img = await uploadService.saveFile(
+                    file,
+                    "remove_bg"
+                );
             }
             await this.create(ProductData);
             ResponseHandler.success(res, "Tao Product thanh cong");
@@ -64,7 +67,10 @@ class ProductService extends GenericService {
                     const uploadService = new UploadService("upload/products");
                     console.log("abc" + item.img);
                     await uploadService.deleteFile(item.img);
-                    ProductData.img = await uploadService.saveFile(file);
+                    ProductData.img = await uploadService.saveFile(
+                        file,
+                        "remove_bg"
+                    );
                 }
                 await item.update(ProductData);
                 ResponseHandler.success(

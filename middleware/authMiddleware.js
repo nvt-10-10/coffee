@@ -1,19 +1,38 @@
 import jwt from "jsonwebtoken";
-import config from "../config/jwtConfig.js";
+import config from "../config/JwtConfig.js";
 import ResponseHandler from "../utils/ResponseHandler.js";
-
-function authMiddleware(req, res, next) {
-    const token = req.headers.authorization;
-    if (!token) {
-        return ResponseHandler.error(res, "Cần có mã thông báo ủy quyền", 401);
+import { validationResult } from "express-validator";
+class authMiddleware {
+    async authMiddleware(req, res, next) {
+        console.log("da qya");
+        const token = req.headers.authorization;
+        if (!token) {
+            return ResponseHandler.error(
+                res,
+                "Cần có mã thông báo ủy quyền",
+                401
+            );
+        }
+        try {
+            const decoded = jwt.verify(token, config.jwtSecret);
+            req.user = decoded;
+            next();
+        } catch (error) {
+            return ResponseHandler.error(res, "Mã không hợp lệ", 401);
+        }
     }
-    try {
-        const decoded = jwt.verify(token, config.jwtSecret);
-        req.user = decoded;
+    async loginMiddleware(req, res, next) {
+        const errors = validationResult(req);
+
+        if (!errors.isEmpty()) {
+            const errorMessage = errors
+                .array()
+                .map((error) => error.msg)
+                .join(" ");
+            return ResponseHandler.error(res, errorMessage, 401);
+        }
         next();
-    } catch (error) {
-        return ResponseHandler.error(res, "Mã không hợp lệ", 401);
     }
 }
 
-export default authMiddleware;
+export default new authMiddleware();

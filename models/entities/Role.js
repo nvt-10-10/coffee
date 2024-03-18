@@ -27,9 +27,9 @@ const Role = sequelize.define(
     }
 );
 
-(async () => {
-    await sequelize.sync();
-    console.log("Database synchronized");
-})();
+// (async () => {
+//     await sequelize.sync();
+//     console.log("Database synchronized");
+// })();
 
 export default Role;
