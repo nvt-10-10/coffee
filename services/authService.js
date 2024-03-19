@@ -107,7 +107,7 @@ class AuthService {
 
     async refreshAccessToken(req, res) {
         try {
-            var refreshToken = req.cookies.refreshToken;
+            const refreshToken = req.cookies.refreshToken;
             if (refreshToken) {
                 const user = await this.decodeRefreshToken(refreshToken);
                 if (user) {

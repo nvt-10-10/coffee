@@ -1,6 +1,6 @@
 import { check, body, validationResult, query, param } from "express-validator";
 import ResponseHandler from "../utils/ResponseHandler.js";
-const validateRoleCreate = [
+const validatorRoleCreate = [
     body("name", "Tên không được để rỗng").not().isEmpty(),
     (req, res, next) => {
         const errors = validationResult(req);
@@ -16,7 +16,7 @@ const validateRoleCreate = [
     },
 ];
 
-const validateRoleUpdate = [
+const validatorRoleUpdate = [
     body("id", "Id phải là số nguyên").isNumeric(),
     body("name", "Tên không được để rỗng").not().isEmpty(),
     (req, res, next) => {
@@ -33,7 +33,7 @@ const validateRoleUpdate = [
     },
 ];
 
-const validateRoleDelete = [
+const validatorRoleDelete = [
     param("id", "Id phải là số nguyên").isNumeric(),
     param("id", "id không được để rỗng").isEmpty(),
     (req, res, next) => {
@@ -50,9 +50,9 @@ const validateRoleDelete = [
     },
 ];
 
-const roleValidate = {
-    validateRoleCreate,
-    validateRoleUpdate,
-    validateRoleDelete,
+const roleValidator = {
+    validatorRoleCreate,
+    validatorRoleUpdate,
+    validatorRoleDelete,
 };
-export default roleValidate;
+export default roleValidator;

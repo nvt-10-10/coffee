@@ -1,7 +1,5 @@
 import fs from "fs";
 import path from "path";
-import { Rembg } from "@xixiyahaha/rembg-node";
-import sharp from "sharp";
 class UploadService {
     constructor(uploadDir) {
         this.uploadDir = uploadDir;

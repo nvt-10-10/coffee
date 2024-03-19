@@ -1,6 +1,6 @@
 import { body, validationResult } from "express-validator";
 import ResponseHandler from "../utils/ResponseHandler.js";
-const validateLogin = [
+const validatorLogin = [
     body("email", "Email không được để rỗng").not().isEmpty(),
     body("email", "Email không hợp lệ").isEmail(),
     body("password", "Email hoặc mật khẩu không đúng").isLength({ min: 6 }),
@@ -18,7 +18,7 @@ const validateLogin = [
     },
 ];
 
-const validateRegister = [
+const validatorRegister = [
     body("email", "Email không được để rỗng").not().isEmpty(),
     body("email", "Email không hợp lệ").isEmail(),
     body("name", "Tên  không được để rỗng").not().isEmpty(),
@@ -37,5 +37,5 @@ const validateRegister = [
         next();
     },
 ];
-const authValidate = { validateLogin, validateRegister };
-export default authValidate;
+const authValidator = { validatorLogin, validatorRegister };
+export default authValidator;

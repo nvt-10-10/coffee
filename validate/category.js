@@ -1,6 +1,6 @@
 import { body, validationResult } from "express-validator";
 import ResponseHandler from "../utils/ResponseHandler.js";
-const validateCategory = [
+const validatorCategory = [
     body("name", "Tên không được để rỗng").not().isEmpty(),
     (req, res, next) => {
         const errors = validationResult(req);
@@ -16,5 +16,5 @@ const validateCategory = [
     },
 ];
 
-const CategoryValidate = { validateCategory };
-export default CategoryValidate;
+const categoryValidator = { validatorCategory };
+export default categoryValidator;

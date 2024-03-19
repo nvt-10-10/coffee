@@ -23,7 +23,6 @@ class AuthMiddleware {
     async adminMiddleware(req, res, next) {
         await AuthMiddleware.prototype.authMiddleware(req, res, async () => {
             const user = req.user;
-            console.log(user);
             if (!user || !user.role.includes("Quản lý")) {
                 return ResponseHandler.error(
                     res,
