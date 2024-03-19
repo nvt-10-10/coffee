@@ -22,6 +22,7 @@ const validatorRegister = [
     body("email", "Email không được để rỗng").not().isEmpty(),
     body("email", "Email không hợp lệ").isEmail(),
     body("name", "Tên  không được để rỗng").not().isEmpty(),
+    body("username", "Tên  không được để rỗng").not().isEmpty(),
     body("password", "Độ dài mật khẩu có ít nhất 6 kí tự").isLength({
         min: 6,
     }),
