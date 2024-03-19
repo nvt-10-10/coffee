@@ -36,7 +36,6 @@ class UserService extends GenericService {
             await this.create(userData);
             ResponseHandler.success(res, "Tạo tài khoản thành công");
         } catch (error) {
-            console.log(error);
             if (error instanceof ValidationError) {
                 ResponseHandler.error(res, handleValidationError(error.errors));
                 return;

@@ -47,7 +47,6 @@ class ProductService extends GenericService {
             await this.create(ProductData);
             ResponseHandler.success(res, "Tao Product thanh cong");
         } catch (error) {
-            console.log(error);
             if (error instanceof ValidationError) {
                 ResponseHandler.error(res, handleValidationError(error.errors));
                 return;
@@ -65,7 +64,6 @@ class ProductService extends GenericService {
             } else {
                 if (file) {
                     const uploadService = new UploadService("upload/products");
-                    console.log("abc" + item.img);
                     await uploadService.deleteFile(item.img);
                     ProductData.img = await uploadService.saveFile(
                         file,
@@ -79,7 +77,6 @@ class ProductService extends GenericService {
                 );
             }
         } catch (error) {
-            console.log(error);
             ResponseHandler.error(res, "Xảy ra lỗi ở máy chủ");
         }
     }

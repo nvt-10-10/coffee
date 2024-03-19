@@ -10,8 +10,15 @@ class AuthService {
     async login(req, res) {
         try {
             const { email, password } = req.body;
-            console.log({ email, password });
-            const user = await User.findOne({ where: { email } });
+            const user = await User.findOne(
+                {
+                    include: {
+                        model: Role,
+                        attributes: ["name"],
+                    },
+                },
+                { where: { email } }
+            );
             if (user) {
                 if (await comparePassword(password, user.password)) {
                     const token = await this.generateAccessToken(user);
@@ -34,7 +41,6 @@ class AuthService {
                 ResponseHandler.error(res, "Tài khoản không tồn tại");
             }
         } catch (error) {
-            console.log(error);
             return ResponseHandler.error(res, "Xảy ra lỗi ở máy chủ");
         }
     }
@@ -53,7 +59,6 @@ class AuthService {
             await User.create(userData);
             ResponseHandler.success(res, "Tạo tài khoản thành công");
         } catch (error) {
-            console.log(error);
             if (error instanceof ValidationError) {
                 ResponseHandler.error(res, handleValidationError(error.errors));
                 return;
@@ -64,7 +69,7 @@ class AuthService {
 
     async generateAccessToken(user) {
         return jwt.sign(
-            { id: user.id, email: user.email },
+            { id: user.id, email: user.email, role: user.role.name },
             process.env.ACCESS_TOKEN_KEY,
             {
                 expiresIn: process.env.TIME_ACCESS_TOKEN,
@@ -93,7 +98,6 @@ class AuthService {
 
     async decodeRefreshToken(token) {
         try {
-            console.log("RefreshToken", token);
             const decoded = jwt.verify(token, process.env.REFRESH_TOKEN_KEY);
             return decoded;
         } catch (error) {
@@ -104,7 +108,6 @@ class AuthService {
     async refreshAccessToken(req, res) {
         try {
             var refreshToken = req.cookies.refreshToken;
-            console.log("refreshToken", refreshToken);
             if (refreshToken) {
                 const user = await this.decodeRefreshToken(refreshToken);
                 if (user) {
@@ -130,7 +133,7 @@ class AuthService {
                 return ResponseHandler.error(res, "Mã xác thực không đúng");
             }
         } catch (error) {
-            console.log(error);
+            ResponseHandler.error(res, "Xảy ra lỗi ở máy chủ");
         }
     }
 
@@ -153,7 +156,6 @@ class AuthService {
                 return ResponseHandler.error(res, "Bạn chưa đăng nhập");
             }
         } catch (error) {
-            console.log(error);
             ResponseHandler.error(res, "Xảy ra lỗi ở máy chủ");
         }
     }

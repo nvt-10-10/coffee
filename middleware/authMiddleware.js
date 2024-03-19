@@ -1,10 +1,8 @@
-import jwt from "jsonwebtoken";
-import config from "../config/JwtConfig.js";
 import ResponseHandler from "../utils/ResponseHandler.js";
-import { validationResult } from "express-validator";
-class authMiddleware {
+import authService from "../services/authService.js";
+
+class AuthMiddleware {
     async authMiddleware(req, res, next) {
-        console.log("da qya");
         const token = req.headers.authorization;
         if (!token) {
             return ResponseHandler.error(
@@ -14,25 +12,28 @@ class authMiddleware {
             );
         }
         try {
-            const decoded = jwt.verify(token, config.jwtSecret);
+            const decoded = await authService.decodeAccessToken(token);
             req.user = decoded;
             next();
         } catch (error) {
             return ResponseHandler.error(res, "Mã không hợp lệ", 401);
         }
     }
-    async loginMiddleware(req, res, next) {
-        const errors = validationResult(req);
 
-        if (!errors.isEmpty()) {
-            const errorMessage = errors
-                .array()
-                .map((error) => error.msg)
-                .join(" ");
-            return ResponseHandler.error(res, errorMessage, 401);
-        }
-        next();
+    async adminMiddleware(req, res, next) {
+        await AuthMiddleware.prototype.authMiddleware(req, res, async () => {
+            const user = req.user;
+            console.log(user);
+            if (!user || !user.role.includes("Quản lý")) {
+                return ResponseHandler.error(
+                    res,
+                    "Không đủ quyền truy cập",
+                    403
+                );
+            }
+            next();
+        });
     }
 }
 
-export default new authMiddleware();
+export default new AuthMiddleware();

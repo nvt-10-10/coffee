@@ -30,10 +30,9 @@ class RoleService extends GenericService {
 
     async updateRole(res, id, roleData) {
         try {
-            console.log(`id: ${id} data ${roleData} res: ${res}`);
             await this.update(id, roleData, res);
         } catch (error) {
-            console.log(error);
+            error;
             ResponseHandler.error(res, "Xảy ra lỗi ở máy chủ");
         }
     }

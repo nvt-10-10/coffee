@@ -19,7 +19,6 @@ const upload = multer({
 
 const handleImageUpload = (req, res, next) => {
     upload.single("file")(req, res, function (err) {
-        console.log(err);
         if (err) {
             if (err.code == "LIMIT_FILE_SIZE") {
                 return ResponseHandler.error(
