@@ -1,4 +1,4 @@
-import { check, body, validationResult, query, param } from "express-validator";
+import { body, validationResult, param } from "express-validator";
 import ResponseHandler from "../utils/ResponseHandler.js";
 const validatorRoleCreate = [
     body("name", "Tên không được để rỗng").not().isEmpty(),

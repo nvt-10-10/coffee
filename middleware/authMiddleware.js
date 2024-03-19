@@ -16,8 +16,22 @@ class AuthMiddleware {
             req.user = decoded;
             next();
         } catch (error) {
-            return ResponseHandler.error(res, "Mã không hợp lệ", 401);
+            return ResponseHandler.error(res, "Bạn không có quyền này", 401);
         }
+    }
+
+    async staffMiddleware(req, res, next) {
+        await AuthMiddleware.prototype.authMiddleware(req, res, async () => {
+            const user = req.user;
+            if (!user || !user.role.includes("Nhân viên")) {
+                return ResponseHandler.error(
+                    res,
+                    "Bạn không có quyền này",
+                    403
+                );
+            }
+            next();
+        });
     }
 
     async adminMiddleware(req, res, next) {
@@ -26,7 +40,7 @@ class AuthMiddleware {
             if (!user || !user.role.includes("Quản lý")) {
                 return ResponseHandler.error(
                     res,
-                    "Không đủ quyền truy cập",
+                    "Bạn không có quyền này",
                     403
                 );
             }
