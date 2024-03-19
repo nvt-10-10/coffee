@@ -13,10 +13,8 @@ class GenericService {
             } else {
                 result = await this.model.findAll();
             }
-            console.log(res);
             ResponseHandler.success(res, "Lấy dữ liệu thành công", result);
         } catch (error) {
-            console.log(error);
             ResponseHandler.error(res, "Xảy ra lỗi ở máy chủ");
         }
     }
@@ -54,10 +52,8 @@ class GenericService {
             } else {
                 result = await this.model.findByPk(id);
             }
-            console.log(result);
             ResponseHandler.success(res, "Lấy dữ liệu thành công", result);
         } catch (error) {
-            console.log(error);
             ResponseHandler.error(res, "Xảy ra lỗi ở máy chủ");
         }
     }
@@ -104,7 +100,6 @@ class GenericService {
         }
     }
     async filter(res, paginationParams) {
-        console.log(paginationParams);
         try {
             let { page, size, sort } = paginationParams;
             size = parseInt(size);
@@ -121,7 +116,6 @@ class GenericService {
             const data = new PaginatePaginate(rows, total, page, size).get();
             ResponseHandler.success(res, `Lấy dữ liệu thành công `, data);
         } catch (error) {
-            console.log(error);
             ResponseHandler.error(res, "Xảy ra lỗi ở máy chủ");
         }
     }

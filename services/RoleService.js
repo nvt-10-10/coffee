@@ -32,7 +32,6 @@ class RoleService extends GenericService {
         try {
             await this.update(id, roleData, res);
         } catch (error) {
-            error;
             ResponseHandler.error(res, "Xảy ra lỗi ở máy chủ");
         }
     }

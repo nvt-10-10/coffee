@@ -17,7 +17,6 @@ class ReviewService extends GenericService {
             );
             ResponseHandler.success(res, "Lấy dữ liệu thành công", result);
         } catch (error) {
-            console.log(error);
             if (error instanceof ValidationError) {
                 return ResponseHandler.error(
                     res,
