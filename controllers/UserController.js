@@ -1,7 +1,7 @@
 import UserService from "../services/UserService.js";
 class UserController {
     async getAllUser(req, res) {
-        await UserService.getAll(res);
+        await UserService.getAll(res, "base");
     }
 
     async getAllUserByPage(req, res) {
@@ -14,23 +14,13 @@ class UserController {
         await UserService.getUserById(res, id);
     }
 
-    async createUser(req, res) {
-        const { username, password, email, name, phone } = req.body;
-        await UserService.createUser(res, {
-            username,
-            password,
-            name,
-            email,
-            phone,
-        });
-    }
-
     async updateUser(req, res) {
         const { id, username, password, email, name, phone } = req.body;
         let file;
         if (req.uploadedFile) {
             file = req.uploadedFile;
         }
+
         await UserService.updateUser(
             res,
             id,

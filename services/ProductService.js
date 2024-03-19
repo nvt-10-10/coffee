@@ -64,11 +64,9 @@ class ProductService extends GenericService {
             } else {
                 if (file) {
                     const uploadService = new UploadService("upload/products");
-                    await uploadService.deleteFile(item.img);
-                    ProductData.img = await uploadService.saveFile(
-                        file,
-                        "remove_bg"
-                    );
+                    if (ProductData.img)
+                        await uploadService.deleteFile(item.img);
+                    ProductData.img = await uploadService.saveFile(file);
                 }
                 await item.update(ProductData);
                 ResponseHandler.success(

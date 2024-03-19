@@ -1,14 +1,14 @@
 import express from "express";
 import AuthController from "../controllers/AuthController.js";
-import authValidate from "../validate/auth.js";
+import authValidator from "../validator/auth.js";
 const router = express.Router();
 
 router.get("/refreshToken", AuthController.refreshToken);
 router.get("/logout", AuthController.logout);
-router.post("/login", authValidate.validatorLogin, AuthController.login);
+router.post("/login", authValidator.validatorLogin, AuthController.login);
 router.post(
     "/register",
-    authValidate.validatorRegister,
+    authValidator.validatorRegister,
     AuthController.register
 );
 export default router;

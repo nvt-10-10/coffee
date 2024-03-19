@@ -50,7 +50,7 @@ class AuthService {
             if (!userData?.role_id) {
                 const role = await Role.findOne({
                     where: {
-                        name: "Người dùng ",
+                        name: "Người dùng",
                     },
                 });
                 userData.role_id = role.id;

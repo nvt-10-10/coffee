@@ -2,9 +2,7 @@ import GenericService from "./GenericService.js";
 import User from "../models/entities/User.js";
 import ResponseHandler from "../utils/ResponseHandler.js";
 import { comparePassword, hashPassword } from "../utils/bcryptUtils.js";
-import { ValidationError, where } from "sequelize";
-import { handleValidationError } from "../utils/HandleValidationError.js";
-import Role from "../models/entities/Role.js";
+import UploadService from "./UploadService.js";
 class UserService extends GenericService {
     constructor() {
         super(User);
@@ -20,28 +18,6 @@ class UserService extends GenericService {
 
     async getUserById(res, id) {
         await this.getByIdRes(res, id, "base");
-    }
-
-    async createUser(res, userData) {
-        try {
-            if (!userData.role_id) {
-                const role = await Role.findOne({
-                    where: {
-                        name: "Người dùng ",
-                    },
-                });
-                userData.role_id = role.id;
-            }
-            userData.password = await hashPassword(userData.password);
-            await this.create(userData);
-            ResponseHandler.success(res, "Tạo tài khoản thành công");
-        } catch (error) {
-            if (error instanceof ValidationError) {
-                ResponseHandler.error(res, handleValidationError(error.errors));
-                return;
-            }
-            ResponseHandler.error(res, "Xảy ra lỗi ở máy chủ");
-        }
     }
 
     async updateUser(res, id, userData, file = null) {
@@ -62,7 +38,8 @@ class UserService extends GenericService {
                 }
                 if (file) {
                     const uploadService = new UploadService("upload/users");
-                    await uploadService.deleteFile(user.avatar);
+                    if (user.avatar)
+                        await uploadService.deleteFile(user.avatar);
                     userData.avatar = await uploadService.saveFile(file);
                 }
                 await user.update(userData);
@@ -71,6 +48,7 @@ class UserService extends GenericService {
                 ResponseHandler.error(res, `Users không tìm thấy`);
             }
         } catch (error) {
+            console.log(error);
             ResponseHandler.error(res, "Xảy ra lỗi ở máy chủ");
         }
     }
