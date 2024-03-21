@@ -21,15 +21,23 @@ class ProductController {
     }
 
     async getProductById(req, res) {
-        const id = req.params.id;
+        const { id } = req.params;
+        console.log(req.query);
         await ProductService.getProductById(res, id);
+    }
+
+    async getProductDetailById(req, res) {
+        const id = req.params.id;
+        await ProductService.getProductDetailById(res, id);
     }
 
     async createProduct(req, res) {
         const { name, price, quantity } = req.body;
+        console.log(req.body);
         let file;
         if (req.uploadedFile) {
             file = req.uploadedFile;
+            console.log(file);
         }
         await ProductService.createProduct(
             res,
@@ -40,6 +48,7 @@ class ProductController {
 
     async updateProduct(req, res) {
         const { id, name, price, quantity } = req.body;
+        console.log();
         let file;
         if (req.uploadedFile) {
             file = req.uploadedFile;
@@ -61,6 +70,11 @@ class ProductController {
     async deleteProduct(req, res) {
         const id = req.params.id;
         await ProductService.deleteProduct(res, id);
+    }
+
+    async test(req, res) {
+        const { page, price, category_id } = req.query;
+        await ProductService.getAllAndFilter(res, { page, price, category_id });
     }
 }
 

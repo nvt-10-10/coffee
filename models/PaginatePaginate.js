@@ -1,5 +1,5 @@
 class PaginatePaginate {
-    constructor(items, total = 0, page = 1, size = 10) {
+    constructor(items, total = 0, page = 1, size = 9) {
         this.items = items;
         this.total = total;
         this.page = page;
@@ -11,6 +11,7 @@ class PaginatePaginate {
     initMeta() {
         const size = this.size;
         const page = this.page;
+        console.log(this.total, " /", this.size);
         const pages = Math.ceil(this.total / this.size);
 
         return {
@@ -29,7 +30,7 @@ class PaginatePaginate {
 
     get() {
         return {
-            item: this.items,
+            data: this.items,
             meta: this.meta,
         };
     }

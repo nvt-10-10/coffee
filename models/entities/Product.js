@@ -47,7 +47,17 @@ const Product = sequelize.define(
     {
         scopes: {
             base: {
-                attributes: ["id", "name", "price"],
+                attributes: [
+                    "id",
+                    "name",
+                    "price",
+                    "img",
+                    "averageStar",
+                    "count_review",
+                ],
+            },
+            detail: {
+                attributes: ["quantity", "descriptions"],
             },
         },
     }

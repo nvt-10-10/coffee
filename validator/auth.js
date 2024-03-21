@@ -1,8 +1,7 @@
 import { body, validationResult } from "express-validator";
 import ResponseHandler from "../utils/ResponseHandler.js";
 const validatorLogin = [
-    body("email", "Email không được để rỗng").not().isEmpty(),
-    body("email", "Email không hợp lệ").isEmail(),
+    body("username", "Email không được để rỗng").not().isEmpty(),
     body("password", "Email hoặc mật khẩu không đúng").isLength({ min: 6 }),
     (req, res, next) => {
         const errors = validationResult(req);

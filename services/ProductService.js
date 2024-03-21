@@ -5,6 +5,7 @@ import GenericService from "./GenericService.js";
 import ResponseHandler from "../utils/ResponseHandler.js";
 import ProductRepository from "../repositories/ProductRepository.js";
 import UploadService from "./UploadService.js";
+import PaginatePaginate from "../models/PaginatePaginate.js";
 
 class ProductService extends GenericService {
     constructor() {
@@ -33,6 +34,19 @@ class ProductService extends GenericService {
 
     async getProductById(res, id) {
         await this.getByIdRes(res, id, "base");
+    }
+
+    async getProductDetailById(res, id) {
+        try {
+            const data = await this.getById(id, ["base", "detail"]);
+            if (data) {
+                ResponseHandler.success(res, "Lấy dữ liệu thành công", data);
+            } else {
+                ResponseHandler.error(res, "Sản phẩm không tồn tại");
+            }
+        } catch (error) {
+            ResponseHandler.error(res, "Xảy ra lỗi ở máy chủ");
+        }
     }
 
     async createProduct(res, ProductData, file = null) {
@@ -85,6 +99,29 @@ class ProductService extends GenericService {
 
     async filterProduct(res, paginationParams) {
         await this.filter(res, paginationParams);
+    }
+
+    async getAllAndFilter(res, filter, size = 9) {
+        try {
+            const { page, price, category_id } = filter;
+            console.log(filter);
+            const result = await ProductRepository.getAllProductByCategories(
+                category_id,
+                price,
+                page,
+                size
+            );
+
+            const data = new PaginatePaginate(
+                result.results,
+                result.total[0].total,
+                page,
+                size
+            ).get();
+            ResponseHandler.success(res, `Lấy dữ liệu thành công `, data);
+        } catch (error) {
+            console.log(error);
+        }
     }
 }
 

@@ -9,18 +9,19 @@ import { handleValidationError } from "../utils/HandleValidationError.js";
 class AuthService {
     async login(req, res) {
         try {
-            const { email, password } = req.body;
-            const user = await User.findOne(
-                {
-                    include: {
-                        model: Role,
-                        attributes: ["name"],
-                    },
+            const { username, password } = req.body;
+            const user = await User.findOne({
+                where: { username },
+                include: {
+                    model: Role,
+                    attributes: ["name"],
                 },
-                { where: { email } }
-            );
+            });
+
             if (user) {
+                console.log(user);
                 if (await comparePassword(password, user.password)) {
+                    console.log("da qya");
                     const token = await this.generateAccessToken(user);
                     const refreshToken = await this.generateRefreshToken(user);
                     res.cookie("refreshToken", refreshToken, {
@@ -36,11 +37,17 @@ class AuthService {
                     ResponseHandler.success(res, "Đăng nhập thành công", {
                         token,
                     });
+                } else {
+                    return ResponseHandler.error(
+                        res,
+                        "Tài khoản hoặc mật khẩu không đúng"
+                    );
                 }
             } else {
-                ResponseHandler.error(res, "Tài khoản không tồn tại");
+                return ResponseHandler.error(res, "Tài khoản không tồn tại");
             }
         } catch (error) {
+            console.log(error);
             return ResponseHandler.error(res, "Xảy ra lỗi ở máy chủ");
         }
     }

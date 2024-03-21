@@ -52,7 +52,10 @@ class GenericService {
             } else {
                 result = await this.model.findByPk(id);
             }
-            ResponseHandler.success(res, "Lấy dữ liệu thành công", result);
+            if (result)
+                ResponseHandler.success(res, "Lấy dữ liệu thành công", result);
+            else
+                ResponseHandler.error(res, `${this.model.name} không tìm thấy`);
         } catch (error) {
             ResponseHandler.error(res, "Xảy ra lỗi ở máy chủ");
         }
@@ -99,7 +102,7 @@ class GenericService {
             ResponseHandler.error(res, "Xảy ra lỗi ở máy chủ");
         }
     }
-    async filter(res, paginationParams) {
+    async filter(res, paginationParams, order = "createdAt") {
         try {
             let { page, size, sort } = paginationParams;
             size = parseInt(size);
@@ -108,7 +111,7 @@ class GenericService {
             const offset = (page - 1) * size > 0 ? (page - 1) * size : 0;
 
             const { rows, count: total } = await this.model.findAndCountAll({
-                order: [["createdAt"]],
+                order: [order],
                 limit: limit,
                 offset: offset,
             });

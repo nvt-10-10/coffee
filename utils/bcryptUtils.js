@@ -14,6 +14,7 @@ async function hashPassword(password) {
 async function comparePassword(password, hashedPassword) {
     try {
         const match = await bcrypt.compare(password, hashedPassword);
+        console.log(match);
         return match;
     } catch (error) {
         throw error;

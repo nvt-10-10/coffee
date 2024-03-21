@@ -23,28 +23,40 @@ class AuthMiddleware {
     async staffMiddleware(req, res, next) {
         await AuthMiddleware.prototype.authMiddleware(req, res, async () => {
             const user = req.user;
-            if (!user || !user.role.includes("Nhân viên")) {
+            console.log(user);
+            if (!user) {
                 return ResponseHandler.error(
                     res,
                     "Bạn không có quyền này",
                     403
                 );
             }
-            next();
+            if (
+                user.role.includes("Nhân viên") ||
+                user.role.includes("Quản lý")
+            ) {
+                next();
+            } else
+                return ResponseHandler.error(
+                    res,
+                    "Bạn không có quyền này",
+                    403
+                );
         });
     }
 
     async adminMiddleware(req, res, next) {
         await AuthMiddleware.prototype.authMiddleware(req, res, async () => {
             const user = req.user;
-            if (!user || !user.role.includes("Quản lý")) {
+            if (user.role.includes("Quản lý")) {
+                next();
+            } else {
                 return ResponseHandler.error(
                     res,
                     "Bạn không có quyền này",
                     403
                 );
             }
-            next();
         });
     }
 }
