@@ -47,7 +47,6 @@ async function getInit(size, items, length) {
         nav = false;
         mouseDrag = false;
     }
-    console.log(breakpoint);
     if (
         nav &&
         (breakpoint == "lg" ||
@@ -60,14 +59,16 @@ async function getInit(size, items, length) {
         nav = false;
         $(".owl-nav").css("display", "none");
     }
-    return { nav, mouseDrag };
+    let autoplay = false;
+    if (breakpoint == "xs") autoplay = true;
+    return { nav, mouseDrag, autoplay };
 }
 
 async function slider_carouselInit(classShow, size, length) {
     const classIndex = `.${classShow} .owl-carousel.slider_carousel`;
-    const autoplay = classShow == "review";
     const items = await getItems(classShow);
-    let { nav, mouseDrag } = await getInit(size, items, length);
+    let { nav, mouseDrag, autoplay } = await getInit(size, items, length);
+    if (classShow == "review") autoplay = true;
     console.table({ classShow, nav, mouseDrag });
     const init = {
         dots: false,
