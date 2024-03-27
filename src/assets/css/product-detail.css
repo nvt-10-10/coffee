@@ -1,0 +1,232 @@
+@import url("./index.css");
+@import url("./custom.css");
+.header {
+    background: #000;
+}
+
+.header-logo {
+    height: 40px;
+}
+
+.avatar {
+    display: block;
+    height: 45px;
+    width: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.header-search,
+.header-search::placeholder {
+    color: #fff;
+    font-family: Poppins;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+.header-search {
+    padding: 8px 16px;
+    margin-left: auto;
+    border-radius: 50px;
+    border: 1px solid #fff;
+}
+
+.navbar {
+    margin-left: 30px;
+}
+
+.main-left-title {
+    color: #000;
+    font-family: Poppins;
+    font-size: 1.6rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+hr {
+    height: 3px !important;
+    background-color: #ccc;
+}
+
+.slidecontainer > p {
+    font-size: 1.4rem;
+}
+
+.breadcrumbs-item {
+    position: relative;
+    padding-right: 16px;
+}
+
+.breadcrumbs-item:not(:first-child) {
+    padding-left: 5px;
+}
+
+.breadcrumbs-item:not(:last-child):after {
+    position: absolute;
+    content: ">";
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.breadcrumbs-link {
+    color: #8a8b8d;
+    font-family: Poppins;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+.breadcrumbs-item.active .breadcrumbs-link {
+    color: #000;
+}
+
+.breadcrumbs {
+    margin: 30px 0;
+}
+.main {
+    margin-bottom: 80px;
+}
+.main-left {
+    padding: 15px 12px;
+    border-radius: 10px;
+    border: 1px solid #d9d9d9;
+    background: #fff;
+}
+.main-left .btn {
+    padding: 0 8px;
+    font-size: 1.4rem;
+}
+
+.product-thumb {
+    position: relative;
+}
+
+.product-card {
+    position: absolute;
+    right: 17px;
+    top: 17px;
+}
+.product-img {
+    width: 100%;
+    max-height: 400px;
+    border-radius: 20px;
+    background: #f4f4f4;
+    object-fit: contain;
+}
+
+.product-wrap {
+    padding: 0 60px;
+}
+.count-review,
+.product-sold,
+.size-link,
+.star-average,
+.product-price,
+.product-size,
+.product-name {
+    color: #000;
+    font-family: Poppins;
+    font-size: 2.6rem;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+.count-review,
+.product-sold,
+.size-link,
+.star-average {
+    font-size: 1.8rem;
+    font-style: normal;
+    font-weight: 400;
+}
+
+.size-link:hover {
+    color: #fff;
+}
+.star-average {
+    font-weight: 500;
+}
+.product-info > div:not(:first-child) {
+    padding: 0 8px;
+}
+.product-info > div {
+    position: relative;
+}
+
+.product-info > div:not(:last-child):after {
+    content: "";
+    position: absolute;
+    width: 1px;
+    height: 25px;
+    background-color: #ccc;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.product-price {
+    font-size: 3.2rem;
+}
+
+.product-size {
+    font-size: 1.6rem;
+}
+
+.size-link {
+    padding: 4px 16px;
+    border-radius: 3px;
+    background: #d9d9d9;
+    font-size: 1.4rem;
+}
+
+.size-item.active .size-link {
+    background-color: #000;
+    color: #fff;
+}
+
+.add-card {
+    padding: 8px 16px;
+    border-radius: 20px;
+    background: #000;
+
+    color: #fff;
+    font-family: Poppins;
+    font-size: 1.4rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+.category {
+    color: #000;
+    font-family: Poppins;
+    font-size: 1.4rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+.prod-tab__item {
+    color: #9e9da8;
+    font-family: Poppins;
+    font-size: 1.4rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+.prod-tab__item.active {
+    color: #000;
+}
+
+.description {
+    color: rgba(0, 0, 0, 0.5);
+    font-family: Poppins;
+    font-size: 1.2rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
