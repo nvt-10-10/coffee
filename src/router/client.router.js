@@ -6,10 +6,17 @@ const routers = [
         meta: { requiresAuth: true },
     },
 
+    // {
+    //     path: "/:name/:id",
+    //     name: "ProductDetail",
+    //     component: () => import("../views/clients/productDetail/_index.vue"),
+    //     props: true,
+    // },
+
     {
-        path: "/product/:name/:id",
+        path: "/product",
         name: "ProductDetail",
-        component: () => import("../views/clients/productDetail/_index.vue"),
+        component: () => import("../views/clients/product/_index.vue"),
         props: true,
     },
 ];

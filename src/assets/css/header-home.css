@@ -1,10 +1,10 @@
-.header {
+.header-home {
     position: relative;
     width: 100%;
     min-height: 75vh;
 }
 
-.header::before {
+.header-home::before {
     position: absolute;
     content: "";
     top: 0;
@@ -20,19 +20,19 @@
     z-index: -99;
 }
 
-.navbar {
+.header-home .navbar {
     padding-top: 35px;
     display: flex;
     justify-content: center;
 }
 
-.nav-list {
+.header-home .nav-list {
     padding: 0 32px;
     border-radius: 50px;
     background: #fff;
 }
 
-.nav-link {
+.header-home .nav-link {
     padding: 13px 17px;
     color: #000;
     font-family: "Poppins";
@@ -42,7 +42,7 @@
     line-height: normal;
 }
 
-.header-card {
+.header-home .header-card {
     margin-left: 70px;
     display: flex;
     align-items: center;
@@ -53,17 +53,17 @@
     border-radius: 50%;
 }
 
-.header-content {
+.header-home .header-content {
     padding: 100px 0;
 }
 
-.header-icon img {
+.header-home .header-icon img {
     width: 17px;
     height: 17px;
     object-fit: cover;
 }
 
-.header-heading {
+.header-home .header-heading {
     margin-bottom: 50px;
     color: #fff;
     font-family: Poppins;
@@ -71,7 +71,7 @@
     font-weight: 600;
 }
 
-.header-content span {
+.header-home .header-content span {
     margin-top: 50px;
     display: block;
     color: #fff;
@@ -80,4 +80,9 @@
     font-style: normal;
     font-weight: 500;
     line-height: normal;
+}
+
+.header-home .btn:hover {
+    background: #fff;
+    opacity: 0.85;
 }

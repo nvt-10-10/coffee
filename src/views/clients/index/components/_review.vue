@@ -1,6 +1,6 @@
 <template>
     <article class="review-item mx-sm-5 mx-md-7 mx-lg-10 mx-xl-15 w-100">
-        <blockquote class="line-clamp blockquote">{{ review.text }}</blockquote>
+        <blockquote class="blockquote">{{ review.text }}</blockquote>
         <div class="d-flex align-items-center gap-10 mt-20">
             <img
                 :src="require(`@/assets/imgs/avatars/${review.avatar}`)"

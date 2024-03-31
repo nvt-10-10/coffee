@@ -5,14 +5,17 @@
 
     text-overflow: ellipsis;
 } */
+
+.line-clamp {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 .line-clamp-2 {
     -webkit-line-clamp: 2;
 }
 .line-clamp-3 {
     -webkit-line-clamp: 3;
-}
-.line-clamp {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    /* white-space: nowrap; Đảm bảo văn bản không wrap sang hàng mới */
 }

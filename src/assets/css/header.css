@@ -1,0 +1,38 @@
+.header {
+    position: fixed;
+    width: 100%;
+    background: #000;
+    height: auto !important;
+    z-index: 999;
+}
+
+.header-logo {
+    height: 40px;
+}
+
+.avatar {
+    display: block;
+    height: 45px;
+    width: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.header-search,
+.header-search::placeholder {
+    color: #fff;
+    font-family: Poppins;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+.header-search {
+    padding: 8px 16px;
+    margin-left: auto;
+    border-radius: 50px;
+    border: 1px solid #fff;
+}
+
+.navbar {
+    margin-left: 30px;
+}

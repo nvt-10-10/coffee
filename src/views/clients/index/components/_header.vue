@@ -1,8 +1,7 @@
 <template>
-    <header class="header">
+    <header class="header-home">
         <div class="container-lg">
             <div class="header-xs">
-                <!-- navbar pc -->
                 <nav class="navbar d-xs-block">
                     <ul class="nav-list d-flex">
                         <li class="nav-item">
@@ -61,8 +60,9 @@
                         <div class="col-sm-12 col-md-6">
                             <h1 class="header-heading">LIFE IS NOT BETTER</h1>
 
-                            <a href="" class="btn">Order Now</a>
-
+                            <router-link class="btn" to="product"
+                                >Order Now</router-link
+                            >
                             <span>WITHOUT COFFEE</span>
                         </div>
                     </div>
@@ -74,5 +74,4 @@
             </div>
         </div>
     </header>
-    <router-view></router-view>
 </template>

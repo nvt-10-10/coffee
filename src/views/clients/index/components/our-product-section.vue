@@ -18,8 +18,8 @@
             </Carousel>
 
             <div class="text-center mt-15">
-                <a href="product.html" class="btn bg-dark text-white"
-                    >View All</a
+                <router-link to="product" class="btn bg-dark text-white"
+                    >View All</router-link
                 >
             </div>
         </div>

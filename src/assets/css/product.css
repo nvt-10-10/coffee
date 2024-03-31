@@ -1,40 +1,9 @@
 @import url("./index.css");
 @import url("./custom.css");
-.header {
-    background: #000;
+@import url("./header.css");
+.main {
+    padding-top: 60px;
 }
-
-.header-logo {
-    height: 40px;
-}
-
-.avatar {
-    display: block;
-    height: 45px;
-    width: 45px;
-    border-radius: 50%;
-    object-fit: cover;
-}
-.header-search,
-.header-search::placeholder {
-    color: #fff;
-    font-family: Poppins;
-    font-size: 12px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-}
-.header-search {
-    padding: 8px 16px;
-    margin-left: auto;
-    border-radius: 50px;
-    border: 1px solid #fff;
-}
-
-.navbar {
-    margin-left: 30px;
-}
-
 .main-left-title {
     color: #000;
     font-family: Poppins;
@@ -156,6 +125,7 @@ hr {
 }
 .product-category,
 .product-name {
+    text-align: left;
     color: #000;
     font-family: Poppins;
     font-size: 1.6rem;
@@ -165,6 +135,7 @@ hr {
 }
 
 .product-category {
+    display: block;
     margin-top: 5px;
     font-size: 1.4rem;
     font-weight: 400;

@@ -34,7 +34,7 @@ import { Carousel, Navigation, Slide } from "vue3-carousel";
 import "vue3-carousel/dist/carousel.css";
 import { carousel } from "@/configs/index";
 import Review from "./_review.vue";
-import { resizeBlockquoteMaxHeight } from "../utils/index.js";
+import { resizeHeightText } from "@/utils/index.js";
 
 export default {
     components: {
@@ -83,16 +83,22 @@ export default {
             },
         ];
 
-        let configCarousel = carousel.init(1200, reviews.length, "our-product");
+        let configCarousel = carousel.init(1200, reviews.length, "review");
         const breakpoints = ref(Object);
         const initSettings = ref(Object);
         onMounted(() => {
             let width = window.innerWidth;
             configCarousel = carousel.init(width, reviews.length, "review");
 
-            Promise.all([updateCarousel(), resizeBlockquoteMaxHeight()]);
+            Promise.all([
+                updateCarousel(),
+                resizeHeightText("review-item", "blockquote"),
+            ]);
             window.addEventListener("resize", () => {
-                Promise.all([updateCarousel(), resizeBlockquoteMaxHeight()]);
+                Promise.all([
+                    updateCarousel(),
+                    resizeHeightText("review-item", "blockquote"),
+                ]);
             });
         });
         const updateCarousel = () => {
