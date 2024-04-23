@@ -8,6 +8,9 @@ class CategoryController {
         const page = req.params.page;
         await CategoryService.getAllCategoriesByPage(res, page);
     }
+    async getCategoriesByTypeWithItems(req, res) {
+        await CategoryService.getCategoriesByTypeWithItems(res);
+    }
 
     async getCategoryById(req, res) {
         const id = req.params.id;
@@ -15,13 +18,13 @@ class CategoryController {
     }
 
     async createCategory(req, res) {
-        const { name } = req.body;
-        await CategoryService.createCategory(res, { name });
+        const { name, type } = req.body;
+        await CategoryService.createCategory(res, { name, type });
     }
 
     async updateCategory(req, res) {
-        const { id, name } = req.body;
-        await CategoryService.updateCategory(res, id, { id, name });
+        const { id, name, type } = req.body;
+        await CategoryService.updateCategory(res, id, { id, name, type });
     }
 
     async deleteCategory(req, res) {

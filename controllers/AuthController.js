@@ -17,6 +17,10 @@ class AuthController {
     async logout(req, res) {
         await AuthService.logout(req, res);
     }
+
+    async forgotPassword(req, res) {
+        await AuthService.forgotPassword(req, res);
+    }
 }
 
 export default new AuthController();

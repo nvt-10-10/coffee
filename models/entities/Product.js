@@ -1,6 +1,7 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../../connect/ConnectDb.js";
 import Category from "./Category.js";
+import Cart from "./Cart.js";
 const Product = sequelize.define(
     "products",
     {
@@ -31,7 +32,7 @@ const Product = sequelize.define(
         },
 
         descriptions: {
-            type: DataTypes.STRING,
+            type: DataTypes.TEXT,
         },
 
         averageStar: {
@@ -42,6 +43,16 @@ const Product = sequelize.define(
         count_review: {
             type: DataTypes.INTEGER,
             defaultValue: 0,
+        },
+
+        isFeatured: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: false,
+        },
+
+        status: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: true,
         },
     },
     {
@@ -54,7 +65,13 @@ const Product = sequelize.define(
                     "img",
                     "averageStar",
                     "count_review",
+                    "quantity",
                 ],
+
+                include: {
+                    model: Category,
+                    attributes: ["name", "id"],
+                },
             },
             detail: {
                 attributes: ["quantity", "descriptions"],
@@ -64,5 +81,4 @@ const Product = sequelize.define(
 );
 Category.hasMany(Product, { as: "categories", foreignKey: "category_id" });
 Product.belongsTo(Category, { foreignKey: "category_id" });
-
 export default Product;

@@ -16,7 +16,8 @@ class ReviewController {
     }
 
     async createReview(req, res) {
-        const { product_id, user_id, star, content } = req.body;
+        const { product_id, star, content, order_id } = req.body;
+        const user_id = req.user.id;
         await ReviewService.createReview(res, {
             product_id,
             user_id,

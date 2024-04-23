@@ -9,8 +9,8 @@ class UploadService {
         try {
             const timestamp = Date.now(); // Lấy thời gian hiện tại dưới dạng timestamp
             const fileName = `${timestamp}_${file.originalname}`; // Tạo tên file mới
-            const filePath = path.join(this.uploadDir, fileName);
-
+            const filePath = "upload/" + path.join(this.uploadDir, fileName);
+            console.log(path);
             return new Promise((resolve, reject) => {
                 fs.rename(file.path, filePath, (err) => {
                     if (err) {
@@ -26,7 +26,6 @@ class UploadService {
     }
 
     async deleteFile(filePath) {
-        filePath = global.__dirname + "/" + filePath;
         return new Promise((resolve, reject) => {
             fs.unlink(filePath, (err) => {
                 if (err) {

@@ -1,54 +1,71 @@
 import Product from "../models/entities/Product.js";
-import sequelize from "../connect/ConnectDb.js";
+import { Op, literal } from "sequelize";
+import Category from "../models/entities/Category.js";
 
-import { QueryTypes } from "sequelize";
 class ProductRepository {
-    async getAllProductByCategory(category_id, page) {
-        const data = await Product.findAll({
-            where: {
-                category_id,
-            },
-            limit: 10,
-            offset: page * 10 - 1 > 0 ? page * 10 - 1 : 0,
-        });
-        data.findAndCountAll();
-        return data;
-    }
-    async getAllProductByCategories(
-        categories,
-        price = null,
+    async getFilter(
+        search,
+        category_id,
         page = 0,
-        size = 9
+        price = 10000000000,
+        limit = 9
     ) {
-        let where = "(";
-        if (typeof categories === "string") {
-            where += ` category_id = ${categories}`;
-        } else {
-            where += categories
-                .map((category_id) => `p.category_id = ${category_id}`)
-                .join(` or `);
+        try {
+            let whereCondition = {};
+
+            if (category_id && search) {
+                whereCondition = {
+                    [Op.and]: [
+                        { category_id },
+                        literal(
+                            `LOWER(products.name) LIKE LOWER('%${search}%')`
+                        ), // Thêm tên bảng 'products' trước cột 'name'
+                    ],
+                };
+            } else {
+                if (search && search.length > 0) {
+                    whereCondition = literal(
+                        `LOWER(products.name) LIKE LOWER('%${search}%')`
+                    ); // Thêm tên bảng 'products' trước cột 'name'
+                }
+                if (category_id) {
+                    whereCondition.category_id = category_id;
+                }
+            }
+            whereCondition.price = {
+                [Op.lte]: price,
+            };
+            const queryOptions = {
+                where: whereCondition,
+                attributes: [
+                    "id",
+                    "name",
+                    "price",
+                    "quantity",
+                    "img",
+                    "averageStar",
+                    "count_review",
+                ],
+                include: {
+                    model: Category,
+                    attributes: ["name"],
+                },
+                order: [["averageStar", "DESC"]],
+                limit: limit,
+                offset: page * limit - 1 >= 0 ? page * limit - 1 : 0,
+            };
+
+            console.log(queryOptions);
+
+            const { rows, count } = await Product.findAndCountAll(queryOptions);
+            const results = rows.map((row) => row.get({ plain: true }));
+
+            return { results, count };
+        } catch (error) {
+            console.log(error);
+            throw new Error("Error retrieving products");
         }
-
-        if (price) {
-            where += `) and price <= ${price} `;
-        } else where += ")";
-
-        const query = `SELECT p.id, p.name,p.img,p.price,p.averageStar,p.count_review,c.name  as 'category_name'
-        FROM products p JOIN categories c ON p.category_id = c.id 
-        where   ${where} 
-        order by p.name  limit ${size} offset ${
-            page * 9 - 1 > 0 ? page * 9 - 1 : 0
-        } `;
-        const countQuery = `SELECT count(*) as 'total' FROM products p JOIN categories c ON p.category_id = c.id where  (${where})`;
-
-        const results = await sequelize.query(query, {
-            type: QueryTypes.SELECT,
-        });
-        const total = await sequelize.query(countQuery, {
-            type: QueryTypes.SELECT,
-        });
-
-        return { results, total };
     }
 }
+
 export default new ProductRepository();

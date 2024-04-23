@@ -19,6 +19,8 @@ const Review = sequelize.define(
             type: DataTypes.INTEGER,
             allowNull: false,
         },
+
+    
     },
     {
         scopes: {

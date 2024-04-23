@@ -35,7 +35,6 @@ const validatorRoleUpdate = [
 
 const validatorRoleDelete = [
     param("id", "Id phải là số nguyên").isNumeric(),
-    param("id", "id không được để rỗng").isEmpty(),
     (req, res, next) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {

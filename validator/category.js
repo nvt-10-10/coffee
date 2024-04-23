@@ -18,7 +18,6 @@ const validatorCategoryCreate = [
 
 const validatorCategoryUpdate = [
     body("id", "Id phải là số nguyên").isNumeric(),
-    body("id", "id không được để rỗng").not().isEmpty(),
     body("name", "Tên không được để rỗng").not().isEmpty(),
     (req, res, next) => {
         const errors = validationResult(req);
@@ -36,7 +35,6 @@ const validatorCategoryUpdate = [
 
 const validatorCategoryDelete = [
     param("id", "Id phải là số nguyên").isNumeric(),
-    param("id", "id không được để rỗng").not().isEmpty(),
     (req, res, next) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {

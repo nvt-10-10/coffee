@@ -6,6 +6,7 @@ import categoryValidator from "../validator/category.js";
 const router = express.Router();
 
 router.get("", CategoryController.getAllCategory);
+router.get("/type", CategoryController.getCategoriesByTypeWithItems);
 router.get("/page/:page", CategoryController.getAllCategoryByPage);
 router.get("/:id", CategoryController.getCategoryById);
 router.use(authMiddleware.adminMiddleware);

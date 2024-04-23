@@ -3,6 +3,7 @@ import Category from "../models/entities/Category.js";
 import { handleValidationError } from "../utils/HandleValidationError.js";
 import GenericService from "./GenericService.js";
 import ResponseHandler from "../utils/ResponseHandler.js";
+import CategoryRepository from "../repositories/CategoryRepository.js";
 
 class CategoryService extends GenericService {
     constructor() {
@@ -21,11 +22,22 @@ class CategoryService extends GenericService {
         await this.getByIdRes(res, id, "base");
     }
 
+    async getCategoriesByTypeWithItems(res) {
+        try {
+            const result =
+                await CategoryRepository.getCategoriesByTypeWithItems();
+            ResponseHandler.success(res, "Lay du lieu thnah cong", result);
+        } catch (error) {
+            ResponseHandler.error(res, "Xảy ra lỗi ở máy chủ");
+        }
+    }
+
     async createCategory(res, CategoryData) {
         try {
             await this.create(CategoryData);
             ResponseHandler.success(res, "Tao Category thanh cong");
         } catch (error) {
+            console.log(error);
             if (error instanceof ValidationError) {
                 ResponseHandler.error(res, handleValidationError(error.errors));
                 return;

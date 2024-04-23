@@ -1,4 +1,5 @@
 import PaginatePaginate from "../models/PaginatePaginate.js";
+import encodeImageToBase64 from "../utils/encodeImageToBase64.js";
 import ResponseHandler from "../utils/ResponseHandler.js";
 class GenericService {
     constructor(model) {
@@ -13,25 +14,39 @@ class GenericService {
             } else {
                 result = await this.model.findAll();
             }
+
             ResponseHandler.success(res, "Lấy dữ liệu thành công", result);
         } catch (error) {
             ResponseHandler.error(res, "Xảy ra lỗi ở máy chủ");
         }
     }
 
-    async getAllByPage(res, page, scope = null) {
+    async getAllByPage(res, page = 0, scope = null) {
         try {
             let result;
+            let totalCount;
             if (scope) {
-                result = await this.model.scope(scope).findAll({
-                    limit: 10,
-                    offset: page * 10 - 1 > 0 ? page * 10 - 1 : 0,
-                });
+                const queryResult = await this.model
+                    .scope(scope)
+                    .findAndCountAll({
+                        limit: 9,
+                        offset: page * 9 - 1 > 0 ? page * 9 - 1 : 0,
+                    });
+                result = queryResult.rows;
+                totalCount = queryResult.count;
             } else {
-                result = await this.model.findAll();
+                const queryResult = await this.model.findAndCountAll({
+                    limit: 9,
+                    offset: page * 9 - 1 > 0 ? page * 9 - 1 : 0,
+                });
+                result = queryResult.rows;
+                totalCount = queryResult.count;
             }
+
+            result = new PaginatePaginate(result, totalCount, page).get();
             ResponseHandler.success(res, "Lấy dữ liệu thành công", result);
         } catch (error) {
+            console.log(error);
             ResponseHandler.error(res, "Xảy ra lỗi ở máy chủ");
         }
     }
@@ -120,6 +135,16 @@ class GenericService {
             ResponseHandler.success(res, `Lấy dữ liệu thành công `, data);
         } catch (error) {
             ResponseHandler.error(res, "Xảy ra lỗi ở máy chủ");
+        }
+    }
+    async coverImgBase64(result) {
+        const name = this.model.name;
+        if (name == "Producs") {
+            encodeImageToBase64(result.img);
+        }
+
+        if (name == "Users") {
+            encodeImageToBase64(result.avatar);
         }
     }
 }

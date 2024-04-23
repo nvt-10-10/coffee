@@ -16,11 +16,16 @@ const Category = sequelize.define(
             index: true,
             unique: true,
         },
+
+        type: {
+            type: DataTypes.STRING,
+            defaultValue: "Đồ ăn",
+        },
     },
     {
         scopes: {
             base: {
-                attributes: ["id", "name"],
+                attributes: ["id", "name", "type"],
             },
         },
     }

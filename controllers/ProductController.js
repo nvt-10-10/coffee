@@ -4,25 +4,19 @@ class ProductController {
         await ProductService.getAllProduct(res);
     }
 
-    async getAllProductByPage(req, res) {
-        const page = req.params.page;
-        await ProductService.getAllProductByPage(res, page);
+    async getAllProductCategory(req, res) {
+        const { id, product_id } = req.params;
+        await ProductService.getAllProductByCategory(res, id, product_id);
     }
 
-    async getAllProductByFilter(req, res) {
-        const { page, size, sort } = req.query;
-        await ProductService.filterProduct(res, { page, size, sort });
-    }
+    async getFilter(req, res) {
+        const { search, category_id, page, price } = req.query;
 
-    async getAllProductByCategory(req, res) {
-        const page = req.params.page;
-        const category_id = req.params.category_id;
-        await ProductService.getAllProductByCategory(res, category_id, page);
+        await ProductService.getFilter(res, search, category_id, page, price);
     }
 
     async getProductById(req, res) {
         const { id } = req.params;
-        console.log(req.query);
         await ProductService.getProductById(res, id);
     }
 
@@ -32,7 +26,15 @@ class ProductController {
     }
 
     async createProduct(req, res) {
-        const { name, price, quantity } = req.body;
+        const {
+            name,
+            price,
+            quantity,
+            descriptions,
+            size,
+            isFeatured,
+            category_id,
+        } = req.body;
         console.log(req.body);
         let file;
         if (req.uploadedFile) {
@@ -41,19 +43,36 @@ class ProductController {
         }
         await ProductService.createProduct(
             res,
-            { name, price, quantity },
+            {
+                name,
+                price,
+                quantity,
+                descriptions,
+                size,
+                isFeatured,
+                category_id,
+            },
             file
         );
     }
 
     async updateProduct(req, res) {
-        const { id, name, price, quantity } = req.body;
-        console.log();
+        const {
+            id,
+            name,
+            price,
+            quantity,
+            descriptions,
+            size,
+            isFeatured,
+            category_id,
+        } = req.body;
         let file;
         if (req.uploadedFile) {
             file = req.uploadedFile;
         }
 
+        console.log("file", file);
         await ProductService.updateProduct(
             res,
             id,
@@ -62,6 +81,10 @@ class ProductController {
                 name,
                 price,
                 quantity,
+                descriptions,
+                size,
+                isFeatured,
+                category_id,
             },
             file
         );
@@ -70,11 +93,6 @@ class ProductController {
     async deleteProduct(req, res) {
         const id = req.params.id;
         await ProductService.deleteProduct(res, id);
-    }
-
-    async test(req, res) {
-        const { page, price, category_id } = req.query;
-        await ProductService.getAllAndFilter(res, { page, price, category_id });
     }
 }
 

@@ -8,23 +8,18 @@ const router = express.Router();
 
 router.get("", ProductController.getAllProduct);
 router.get(
-    "/test",
-    productValidator.validatorProductQuery,
-    ProductController.test
+    "/:product_id/category/:id",
+    ProductController.getAllProductCategory
 );
-router.post("/test2", ProductController.getAllProductByCategory);
-router.get("/page/:page", ProductController.getAllProductByPage);
-router.get("/category/page/:page", ProductController.getAllProductByPage);
-router.get("/filter", ProductController.getAllProductByFilter);
-router.get("/page/:page", ProductController.getAllProductByPage);
+router.get("/filter", ProductController.getFilter);
 router.get(
     "/:id",
     productValidator.validatorProductQuery,
     ProductController.getProductById
 );
 router.get("/detail/:id", ProductController.getProductDetailById);
+router.use(authMiddleware.staffMiddleware);
 router.delete("/:id", ProductController.deleteProduct);
 router.post("", handleImageUpload, ProductController.createProduct);
 router.patch("", handleImageUpload, ProductController.updateProduct);
-router.use(authMiddleware.staffMiddleware);
 export default router;

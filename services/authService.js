@@ -5,6 +5,7 @@ import { comparePassword, hashPassword } from "../utils/bcryptUtils.js";
 import { ValidationError, where } from "sequelize";
 import Role from "../models/entities/Role.js";
 import { handleValidationError } from "../utils/HandleValidationError.js";
+import { sendEmail } from "../utils/sendMail.js";
 
 class AuthService {
     async login(req, res) {
@@ -19,9 +20,7 @@ class AuthService {
             });
 
             if (user) {
-                console.log(user);
                 if (await comparePassword(password, user.password)) {
-                    console.log("da qya");
                     const token = await this.generateAccessToken(user);
                     const refreshToken = await this.generateRefreshToken(user);
                     res.cookie("refreshToken", refreshToken, {
@@ -29,13 +28,28 @@ class AuthService {
                         secure: false,
                         path: "/",
                         sameSite: "strict",
+                        maxAge: 7 * 24 * 60 * 60 * 1000,
+                    });
+
+                    res.cookie("refreshToken1", refreshToken, {
+                        httpOnly: false,
+                        secure: false,
+                        path: "/",
+                        sameSite: "strict",
+                        maxAge: 7 * 24 * 60 * 60 * 1000,
                     });
 
                     if (!user.refreshToken) {
                         await user.update(refreshToken);
                     }
                     ResponseHandler.success(res, "Đăng nhập thành công", {
-                        token,
+                        token: token,
+                        user: {
+                            id: user.id,
+                            email: user.email,
+                            avatar: user.avatar,
+                            role: user.role.name,
+                        },
                     });
                 } else {
                     return ResponseHandler.error(
@@ -86,7 +100,7 @@ class AuthService {
 
     async generateRefreshToken(user) {
         return jwt.sign(
-            { id: user.id, email: user.email },
+            { id: user.id, email: user.email, role: user.role.name },
             process.env.REFRESH_TOKEN_KEY,
             {
                 expiresIn: process.env.TIME_REFRESH_TOKEN,
@@ -96,6 +110,8 @@ class AuthService {
 
     async decodeAccessToken(token) {
         try {
+            console.log("token", token);
+            console.log("decodeAccessToken", process.env.ACCESS_TOKEN_KEY);
             const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_KEY);
             return decoded;
         } catch (error) {
@@ -124,10 +140,11 @@ class AuthService {
                     );
                     res.cookie("refreshToken", refreshToken, {
                         httpOnly: true,
-                        secure: false,
+                        secure: "false",
                         path: "/",
-                        sameSite: "strict",
+                        sameSite: "none",
                     });
+                    res.setHeader("Token", `Bearer ${token}`);
                     await User.update(
                         { refreshToken: newRefreshToken }, // Dữ liệu mới sẽ được cập nhật
                         { where: { id: user.id } } // Điều kiện xác định hàng cần cập nhật
@@ -148,6 +165,7 @@ class AuthService {
         try {
             const refreshToken = req.cookies.refreshToken;
             let user;
+            console.log(refreshToken);
             if (refreshToken) {
                 user = await this.decodeRefreshToken(refreshToken);
             }
@@ -165,6 +183,51 @@ class AuthService {
         } catch (error) {
             ResponseHandler.error(res, "Xảy ra lỗi ở máy chủ");
         }
+    }
+
+    async forgotPassword(req, res) {
+        try {
+            const { username } = req.body;
+            console.log(req.body);
+            const user = await User.findOne({
+                where: { username: username },
+            });
+
+            if (user) {
+                const pass = await this.generateRandomString(10);
+
+                sendEmail(
+                    user.email,
+                    "Quên mật khẩu",
+                    "Mật khẩu mới của bạn là:" + pass
+                );
+
+                user.password = await hashPassword(pass);
+                user.save();
+
+                ResponseHandler.success(res, "Doi mat khau thanh cong");
+            } else {
+                ResponseHandler.error(
+                    res,
+                    "Tài khoản hoặc mật khẩu không tồn tại"
+                );
+            }
+        } catch (error) {
+            console.log(error);
+            ResponseHandler.error(res, "Loi xay ra o may chu");
+        }
+    }
+
+    async generateRandomString(length) {
+        const characters =
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-_=+";
+        let result = "";
+        for (let i = 0; i < length; i++) {
+            result += characters.charAt(
+                Math.floor(Math.random() * characters.length)
+            );
+        }
+        return result;
     }
 }
 
